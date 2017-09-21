@@ -1,0 +1,56 @@
+---
+title: "week 3/4 hw"
+author: "Brandon Güell"
+date: "9/21/2017"
+output: html_document
+---
+Prompt: Every Saturday, at the same time, a primatologist goes and sits in the forest in the morning and listens for titi monkey calls, counting the number of calls they hear in a 2 hour window from 5am to 7am. Based on previous knowledge, she believes that the mean number calls she will hear in that time is exactly 15. Let X represent the appropriate Poisson random variable of the number of calls heard in each monitoring session.
+
+*What is the probability that she will hear more than 8 calls during any given session?*
+
+we know that f(x)= λ^xexp(-λ)/x!
+where x = {0, 1, 2, …}
+
+For this distribution, μX = λ and σ(2/x) = λ
+
+so here, 15 probably == lambda ("l")
+and interval ("x")== 8 or 0:8?
+
+so f(8)=(15^exp(-15))/8!
+
+```{r}
+ppois(8,15)
+```
+
+*What is the probability that she will hear no calls in a session?*
+```{r}
+ppois(0,15)
+```
+
+*What is the probability that she will hear exactly 3 calls in a session?*
+```{r}
+ppois(3,15)
+```
+
+*Plot the relevant Poisson mass function over the values in range 0 ≤ xx ≤ 30.*
+```{r}
+x=0:30
+l=15
+probset <- dpois(x = x, lambda = l)
+barplot(probset, names.arg = x, space = 0, xlab = "x", ylab = "Pr(X = x)", main = "Probability Mass Function")
+```
+
+*Simulate 104 results from this distribution (i.e., 2 years of Saturday monitoring sessions).*
+```{r}
+
+```
+
+
+*Plot the simulated results using hist() and use  xlim() to set the horizontal limits to be from 0 to 30. How does your histogram compare to the shape of the probability mass function you plotted above?*
+```{r}
+x=104
+l=15
+hist(ppois(q = x, lambda = l), xlim = 0:30, space = 0, names.arg = x, xlab = "x", ylab = "Pr(X ≤ x)", main = "Cumulative Probability")
+```
+
+
