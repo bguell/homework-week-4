@@ -4,6 +4,8 @@ author: "Brandon Güell"
 date: "9/21/2017"
 output: html_document
 ---
+Homework
+
 Prompt: Every Saturday, at the same time, a primatologist goes and sits in the forest in the morning and listens for titi monkey calls, counting the number of calls they hear in a 2 hour window from 5am to 7am. Based on previous knowledge, she believes that the mean number calls she will hear in that time is exactly 15. Let X represent the appropriate Poisson random variable of the number of calls heard in each monitoring session.
 
 *What is the probability that she will hear more than 8 calls during any given session?*
@@ -37,11 +39,13 @@ ppois(3,15)
 ```{r}
 #PMF
 barplot(dpois(x = 0:30, lambda = 15), names.arg = x, space = 0, xlab = "x", ylab = "Pr(X = x)", main = "Probability Mass Function")
-
+```
+```{r}
 #CDF
 barplot(ppois(q= 0:30, lambda = 15), names.arg = x, space = 0, xlab = "x", ylab = "Pr(X = x)", main = "Cumulative Distribution Function")
 
 ```
+
 
 *Simulate 104 results from this distribution (i.e., 2 years of Saturday monitoring sessions).*
 ```{r}
@@ -54,5 +58,5 @@ simulation
 ```{r}
 hist(simulation, xlim = c(0,30))
 ```
-These are now just count data of the number of times that the observer heard that many calls over the time period. Before, it was the probability of hearing that many calls during ONE observation. Also, before the values all added up to 1, whereas here, that is no longer the case!
 
+#These are now just count data of the number of times that the observer heard that many calls over the time period. Before, it was the probability of hearing that many calls during ONE observation. Also, before the values all added up to 1, whereas here, that is no longer the case!
