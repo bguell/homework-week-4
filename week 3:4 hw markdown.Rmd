@@ -14,17 +14,18 @@ where x = {0, 1, 2, …}
 For this distribution, μX = λ and σ(2/x) = λ
 
 so here, 15 probably == lambda ("l")
-and interval ("x")== 8 or 0:8?
+and interval ("x")== 8?
 
-so f(8)=(15^exp(-15))/8!
+becasue ppois() gives us the probability of hearing less tahn 8 calls, we have to do 1-ppois()...
 
 ```{r}
-ppois(8,15)
+1-ppois(8,15)
 ```
 
+dpois() gives us hte exact probability of hearing exactly 0 calls
 *What is the probability that she will hear no calls in a session?*
 ```{r}
-ppois(0,15)
+dpois(0,15)
 ```
 
 *What is the probability that she will hear exactly 3 calls in a session?*
@@ -34,23 +35,24 @@ ppois(3,15)
 
 *Plot the relevant Poisson mass function over the values in range 0 ≤ xx ≤ 30.*
 ```{r}
-x=0:30
-l=15
-probset <- dpois(x = x, lambda = l)
-barplot(probset, names.arg = x, space = 0, xlab = "x", ylab = "Pr(X = x)", main = "Probability Mass Function")
+#PMF
+barplot(dpois(x = 0:30, lambda = 15), names.arg = x, space = 0, xlab = "x", ylab = "Pr(X = x)", main = "Probability Mass Function")
+
+#CDF
+barplot(ppois(q= 0:30, lambda = 15), names.arg = x, space = 0, xlab = "x", ylab = "Pr(X = x)", main = "Cumulative Distribution Function")
+
 ```
 
 *Simulate 104 results from this distribution (i.e., 2 years of Saturday monitoring sessions).*
 ```{r}
-sample()
+simulation=rpois(104,15)
+simulation
 ```
 
 
 *Plot the simulated results using hist() and use  xlim() to set the horizontal limits to be from 0 to 30. How does your histogram compare to the shape of the probability mass function you plotted above?*
 ```{r}
-x=104
-l=15
-hist(ppois(q = x, lambda = l), xlim = 0:30, space = 0, names.arg = x, xlab = "x", ylab = "Pr(X ≤ x)", main = "Cumulative Probability")
+hist(simulation, xlim = c(0,30))
 ```
-
+These are now just count data of the number of times that the observer heard that many calls over the time period. Before, it was the probability of hearing that many calls during ONE observation. Also, before the values all added up to 1, whereas here, that is no longer the case!
 
