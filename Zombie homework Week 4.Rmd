@@ -116,10 +116,68 @@ sd_of_sample_variables<-sample1 %>%
 summarise(sd(height), sd(weight), sd(age), sd(zombies_killed), sd(years_of_education))
 sd_of_sample_variables
 
+
+#now standard error... i remember seeing a package with se() function.. that is easy lol im going to find it/look it up
+library(sciplot)
+?se
+se_of_sample_variables<-sample1 %>%
+summarise(se(height), se(weight), se(age), se(zombies_killed), se(years_of_education))
+se_of_sample_variables
+#nice! I assume this works for this sample becasue i called it from sample1 which is a sample already???
+
+#okay now CI of each.. let me find that code!
+#so here is code for a generic formula:
+normalCI = function(x, CIlevel = 0.95) {
+    upper = mean(x) + qnorm(1 - (1 - CIlevel)/2) * sqrt(var(x)/length(x))
+    lower = mean(x) + qnorm((1 - CIlevel)/2) * sqrt(var(x)/length(x))
+    ci <- c(lower, upper)
+    return(ci)
+}
+hCI=normalCI(sample1$height, 0.95)
+wCI=normalCI(sample1$weight, 0.95)
+aCI=normalCI(sample1$age, 0.95) #sweet!
+
+hCI
+wCI
+aCI #cool...
+
+normalCI(sample1$zombies_killed, 0.95) # this DOES NOT WORK... not normal...
+normalCI(sample1$years_of_education, 0.95)# this DOES NOT WORK... not normal...
+
+#so for those two im guessign we have to bootstrap. here goes nothing, or everything i guess
+#An alternative way to calculate a confidence interval is by simulation, which does not presume the underlying distribution from which the random variable is drawn.....== from module so YES lets use bootstrapping
+
+set <- NULL  # sets up a dummy variable to hold our 10000 simulations
+n <- 15
+for (i in 1:10000) {
+    set[i] <- mean(sample(sample1$zombies_killed, n, replace = TRUE))
+}
+zkCI=quantile(set, c(0.025, 0.975))
+
+
+#and again for years of education
+set <- NULL  
+n <- 15
+for (i in 1:10000) {
+    set[i] <- mean(sample(sample1$years_of_education, n, replace = TRUE))
+}
+yoeCI=quantile(set, c(0.025, 0.975))
+
+#so here they are:
+zkCI
+yoeCI
 ```
 
+#6
+Now draw 99 more random samples of 30 zombie survivors out and calculate the mean for each of the these samples. Together with the first sample you drew out, you now have a set of 100 means for each variable (each based on 30 observations), which constitutes a sampling distribution for each variable. What are the means and standard deviations of this distribution for each variable? How do the standard deviations compare to the standard errors estimated in [5]? What do these sampling distributions look like? Are they normally distributed? What about for those variables that you concluded were not originally drawn from a normal distribution?
 
 
+```{r}
+library(dplyr)
+sample2=sample_n(d, size=30)
+sample2
+
+```
 
 
 
