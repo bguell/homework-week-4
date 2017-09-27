@@ -36,12 +36,15 @@ ppois(3,15)
 ```
 
 *Plot the relevant Poisson mass function over the values in range 0 ≤ xx ≤ 30.*
+firstly the PMF
 ```{r}
-#PMF
-barplot(dpois(x = 0:30, lambda = 15), names.arg = x, space = 0, xlab = "x", ylab = "Pr(X = x)", main = "Probability Mass Function")
+x=0:30
+barplot(dpois(x=0:30, lambda = 15), names.arg = x, space = 0, xlab = "x", ylab = "Pr(X = x)", main = "Probability Mass Function")
 ```
+
+then the CDF
 ```{r}
-#CDF
+x=0:30
 barplot(ppois(q= 0:30, lambda = 15), names.arg = x, space = 0, xlab = "x", ylab = "Pr(X = x)", main = "Cumulative Distribution Function")
 
 ```
@@ -59,4 +62,4 @@ simulation
 hist(simulation, xlim = c(0,30))
 ```
 
-#These are now just count data of the number of times that the observer heard that many calls over the time period. Before, it was the probability of hearing that many calls during ONE observation. Also, before the values all added up to 1, whereas here, that is no longer the case!
+These are now just count data of the number of times that the observer heard that many calls over the time period. Before, it was the probability of hearing that many calls during ONE observation. Also, before the values all added up to 1, whereas here, that is no longer the case!
