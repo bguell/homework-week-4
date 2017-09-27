@@ -1,0 +1,126 @@
+---
+title: "Zombie Homework Problem Week 4"
+author: "Brandon Güell"
+date: "9/26/2017"
+output: html_document
+---
+
+```{r}
+library(curl)
+f <- f <- curl("https://raw.githubusercontent.com/fuzzyatelin/fuzzyatelin.github.io/master/AN597_Fall17/zombies.csv")
+d <- read.csv(f, header = TRUE, sep = ",", stringsAsFactors = FALSE)
+head(d)
+```
+#1
+Calculate the population mean and standard deviation for each quantitative random variable (height, weight, age, number of zombies killed, and years of education). NOTE: You will not want to use the built in  var() and sd() commands as these are for samples.
+
+so we know this is a population, not a sample. I think the means are the same for a pop and sample so lets start with that
+```{r}
+library(dplyr)
+mean_of_variables<-d %>%
+summarise(mean(height), mean(weight), mean(age), mean(zombies_killed), mean(years_of_education))
+mean_of_variables
+
+#standard deviation for pop== sqrt(sum((x - mean(x))^2)/length(x))
+#lets create a function so that we dont have to type it out for each one! lol maybe!
+#awesome i found it in module 7!!! here it is, first the variance then the sd of a pop
+pop_v <- function(x) {sum((x - mean(x))^2)/(length(x))}
+#create vector of variances
+hvar=pop_v(d$height)
+wvar=pop_v(d$weight)
+avar=pop_v(d$age)
+zkvar=pop_v(d$zombies_killed)
+yoevar=pop_v(d$years_of_education)
+#Just realized after that i dont need these variables LOL... o well
+
+#now the function for sd of a pop
+pop_sd <- function(x) {
+  sqrt(pop_v(x))}
+#then lets run that function on our newly made varaibles
+sd_of_variables=c(pop_sd(d$height),pop_sd(d$weight),pop_sd(d$age),pop_sd(d$zombies_killed),pop_sd(d$years_of_education))
+sd_of_variables
+
+#okay so finished products are here:
+
+mean_of_variables
+sd_of_variables
+```
+#2
+now to plot stuff on ggplot: Use {ggplot} and make boxplots of each of these variables by gender.
+```{r}
+library(ggplot2)
+g= ggplot(data=d, aes(x=gender, y=mean_of_variables)) + geom_boxplot()
+g
+
+```
+#3
+Scatterplots:Use {ggplot} and make scatterplots of height and weight in relation to age. Do these variables seem to be related? In what way?
+```{r}
+g= ggplot(data=d, aes(x=age, y=height)) + geom_point() + geom_smooth()
+g
+#height seems to increase with age: positive correlation... you can see it nicely here also:
+g= ggplot(data=d, aes(x=age, y=height)) + geom_point() + geom_smooth(method = "lm")
+g
+
+g= ggplot(data=d, aes(x=age, y=weight)) + geom_point() + geom_smooth()
+g
+#weight seems to be less strongly correlated with age, but still a positive correlation
+g= ggplot(data=d, aes(x=age, y=weight)) + geom_point() + geom_smooth(method = "lm")
+g
+
+#so they are related because as age increases, they both increase?... makes logical sense also
+```
+
+#4
+Using histograms and Q-Q plots, check whether the quantitative variables seem to be drawn from a normal distribution. Which seem to be and which do not (hint: not all are drawn from the normal distribution)? For those that are not, can you determine what common distribution they are drawn from?
+
+```{r}
+#lets start with height...
+hist(d$height) #seems super normal to me... lets check with Q-Q
+qqnorm(d$height, main = "Normal QQ plot random normal variables") #yup seems normal
+
+#weight
+hist(d$weight) #hmm less perfectly normal than before but i think it counts! lets check!
+qqnorm(d$weight, main = "Normal QQ plot random normal variables") #yup seems normal
+
+#age
+hist(d$age) #looks normal
+qqnorm(d$age, main = "Normal QQ plot random normal variables") #yup seems normal again
+
+#zombies killed
+hist(d$zombies_killed) #definitely NOT normal... I'd guess Poisson dist. or geometric?
+qqnorm(d$zombies_killed, main = "Normal QQ plot random normal variables") #definitely NOT normal
+
+#years of education
+hist(d$years_of_education) #again definitely NOT normal...  Poisson dist. or geometric? again
+qqnorm(d$years_of_education, main = "Normal QQ plot random normal variables") #definitely NOT normal
+
+```
+
+#5
+Now use the sample() function to sample ONE subset of 30 zombie survivors (without replacement) from this population and calculate the mean and sample standard deviation for each variable. Also estimate the standard error for each variable and construct the 95% confidence interval for each mean. Note that for the variables that are not drawn from the normal distribution, you will need to base your estimate of the CIs on some different distribution
+
+```{r}
+#had to look this up... dplyr has a nice function lets use it
+library(dplyr)
+sample1=sample_n(d, size=30, replace = FALSE) # BOOYAA worked! oh shit its not hte sample() function though... lol o well this was easier?!
+sample1
+
+mean_of_sample_variables<-sample1 %>%
+summarise(mean(height), mean(weight), mean(age), mean(zombies_killed), mean(years_of_education))
+mean_of_sample_variables
+
+#now we can do the sd() function. YAY that is easier... here it is
+
+sd_of_sample_variables<-sample1 %>%
+summarise(sd(height), sd(weight), sd(age), sd(zombies_killed), sd(years_of_education))
+sd_of_sample_variables
+
+```
+
+
+
+
+
+
+
