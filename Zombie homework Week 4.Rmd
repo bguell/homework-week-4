@@ -49,8 +49,26 @@ sd_of_variables
 now to plot stuff on ggplot: Use {ggplot} and make boxplots of each of these variables by gender.
 ```{r}
 library(ggplot2)
-g= ggplot(data=d, aes(x=gender, y=mean_of_variables)) + geom_boxplot()
-g
+
+plot_height= ggplot(data=d, aes(x=gender, y=height)) + geom_boxplot()
+plot_height
+
+
+plot_weight= ggplot(data=d, aes(x=gender, y=weight)) + geom_boxplot()
+plot_weight
+
+
+plot_age= ggplot(data=d, aes(x=gender, y=age)) + geom_boxplot()
+plot_age
+
+
+plot_zk= ggplot(data=d, aes(x=gender, y=zombies_killed)) + geom_boxplot()
+plot_zk
+
+
+plot_yoe= ggplot(data=d, aes(x=gender, y=years_of_education)) + geom_boxplot()
+plot_yoe
+
 
 ```
 #3
@@ -103,7 +121,7 @@ Now use the sample() function to sample ONE subset of 30 zombie survivors (witho
 ```{r}
 #had to look this up... dplyr has a nice function lets use it
 library(dplyr)
-sample1=sample_n(d, size=30, replace = FALSE) # BOOYAA worked! oh shit its not hte sample() function though... lol o well this was easier?!
+sample1=sample_n(d, size=30, replace = FALSE) # BOOYAA worked! oh shit its not the sample() function though... lol o well this was easier?!
 sample1
 
 mean_of_sample_variables<-sample1 %>%
@@ -173,9 +191,18 @@ Now draw 99 more random samples of 30 zombie survivors out and calculate the mea
 
 
 ```{r}
-library(dplyr)
-sample2=sample_n(d, size=30)
-sample2
+nrolls <- 99
+roll <- function(x) {
+    sample_n(d, x, replace = FALSE)
+}
+
+sample_thing <- roll(nrolls) 
+sample_thing #okay i think this worked! got 99 more samples....
+
+mean_of_sample_variables2<-sample_thing %>%
+summarise(mean(height), mean(weight), mean(age), mean(zombies_killed), mean(years_of_education))
+mean_of_sample_variables2
+
 
 ```
 
