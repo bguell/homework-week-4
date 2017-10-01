@@ -189,23 +189,137 @@ yoeCI
 #6
 Now draw 99 more random samples of 30 zombie survivors out and calculate the mean for each of the these samples. Together with the first sample you drew out, you now have a set of 100 means for each variable (each based on 30 observations), which constitutes a sampling distribution for each variable. What are the means and standard deviations of this distribution for each variable? How do the standard deviations compare to the standard errors estimated in [5]? What do these sampling distributions look like? Are they normally distributed? What about for those variables that you concluded were not originally drawn from a normal distribution?
 
-
+#weight
 ```{r}
-nrolls <- 99
-roll <- function(x) {
-    sample_n(d, x, replace = FALSE)
-}
+set <- NULL  # sets up a dummy variable to hold our 10000 simulations
+n <- 30
+for (i in 1:99) {
+    set[i] <- mean(sample(d$weight, n, replace = FALSE))
+    }
+set
 
-sample_thing <- roll(nrolls) 
-sample_thing #okay i think this worked! got 99 more samples....
 
-mean_of_sample_variables2<-sample_thing %>%
-summarise(mean(height), mean(weight), mean(age), mean(zombies_killed), mean(years_of_education))
-mean_of_sample_variables2
+mean_of_sample_variables2w=mean(c(set,mean_of_sample_variables$`mean(weight)`))
+mean_of_sample_variables2w
+
+sd_of_sample_variables2w=sd(c(set, sd_of_sample_variables$`sd(weight)`))
+sd_of_sample_variables2w
+
+#distributions of all 100
+set
+h=c(set,mean_of_sample_variables$`mean(weight)`)
+h
+
+hist(h) #seems super normal to me... lets check with Q-Q
+qqnorm(h, main = "Normal QQ plot random normal variables") #yup seems normal
+```
+
+
+#height
+```{r}
+set <- NULL  # sets up a dummy variable to hold our 10000 simulations
+n <- 30
+for (i in 1:99) {
+    set[i] <- mean(sample(d$height, n, replace = FALSE))
+    }
+set
+
+mean_of_sample_variables2h=mean(c(set,mean_of_sample_variables$`mean(height)`))
+mean_of_sample_variables2h
+
+sd_of_sample_variables2h=sd(c(set, sd_of_sample_variables$`sd(height)`))
+sd_of_sample_variables2h
+
+#distributions of all 100
+set
+h=c(set,mean_of_sample_variables$`mean(height)`)
+h
+
+hist(h) #seems super normal to me... lets check with Q-Q
+qqnorm(h, main = "Normal QQ plot random normal variables") #yup seems normal
 
 
 ```
 
 
 
+#age
+```{r}
+set <- NULL  # sets up a dummy variable to hold our 10000 simulations
+n <- 30
+for (i in 1:99) {
+    set[i] <- mean(sample(d$age, n, replace = FALSE))
+    }
+set
 
+mean_of_sample_variables2a=mean(c(set,mean_of_sample_variables$`mean(age)`))
+mean_of_sample_variables2a
+
+sd_of_sample_variables2a=sd(c(set, sd_of_sample_variables$`sd(age)`))
+sd_of_sample_variables2a
+
+#distributions of all 100
+set
+h=c(set,mean_of_sample_variables$`mean(age)`)
+h
+
+hist(h) #seems super normal to me... lets check with Q-Q
+qqnorm(h, main = "Normal QQ plot random normal variables") #yup seems normal
+```
+
+
+#zk
+```{r}
+set <- NULL  # sets up a dummy variable to hold our 10000 simulations
+n <- 30
+for (i in 1:99) {
+    set[i] <- mean(sample(d$zombies_killed, n, replace = FALSE))
+    }
+set
+
+mean_of_sample_variables2zk=mean(c(set,mean_of_sample_variables$`mean(zombies_killed)`))
+mean_of_sample_variables2zk
+
+sd_of_sample_variables2zk=sd(c(set, sd_of_sample_variables$`sd(zombies_killed)`))
+sd_of_sample_variables2zk
+
+
+#distributions of all 100
+set
+h=c(set,mean_of_sample_variables$`mean(zombies_killed)`)
+h
+
+hist(h) #seems super normal to me... lets check with Q-Q
+qqnorm(h, main = "Normal QQ plot random normal variables") #yup seems normal
+```
+
+
+
+#yoe
+```{r}
+set <- NULL  # sets up a dummy variable to hold our 10000 simulations
+n <- 30
+for (i in 1:99) {
+    set[i] <- mean(sample(d$years_of_education, n, replace = FALSE))
+    }
+set
+
+mean_of_sample_variables2yoe=mean(c(set,mean_of_sample_variables$`mean(years_of_education)`))
+mean_of_sample_variables2yoe
+
+sd_of_sample_variables2yoe=sd(c(set, sd_of_sample_variables$`sd(years_of_education)`))
+sd_of_sample_variables2yoe
+
+#distributions of all 100
+set
+h=c(set,mean_of_sample_variables$`mean(years_of_education)`)
+h
+
+hist(h) #seems super normal to me... lets check with Q-Q
+qqnorm(h, main = "Normal QQ plot random normal variables") #yup seems normal
+```
+
+#sd vs SE
+#sd #6 > SE#5 but the sd#6 < sd#5
+
+#the zk and yoe are now more normal becasue we bootstrapped them
